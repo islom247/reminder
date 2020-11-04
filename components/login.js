@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import TextButton from "../shared/button";
 
-export default () => {
+export default ({navigation, updateStatus}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
@@ -29,10 +29,16 @@ export default () => {
                         style={styles.input}
                         secureTextEntry={true}
                     />
-                    <TextButton text="Log In" color="teal" textColor="white"/>
+                    <TextButton
+                        text="Log In"
+                        color="teal"
+                        textColor="white"
+                        onPress={updateStatus}
+                    />
                     <View style={styles.divider}/>
                     <Text style={styles.text}>Don't have an account yet?</Text>
-                    <TextButton text="Register" color="teal" textColor="white"/>
+                    <TextButton text="Register" color="teal" textColor="white"
+                                onPress={() => navigation.navigate("Register")}/>
                 </View>
             </TouchableWithoutFeedback>
         </ImageBackground>

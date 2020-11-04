@@ -71,11 +71,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         marginTop: 20,
         color: "black"
-    },
-    divider: {
-        borderWidth: 1,
-        width: "75%",
-        borderColor: "#888",
-        marginTop: 20
     }
 });
