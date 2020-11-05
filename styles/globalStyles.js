@@ -1,6 +1,17 @@
-import {StyleSheet} from "react-native";
-export default (props) => {
+import {Dimensions, StyleSheet} from "react-native";
+
+export default (props = {}) => {
     return StyleSheet.create({
+        container: {
+            flex: 1,
+            padding: 24,
+            paddingTop: 10,
+            backgroundColor: '#fff',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: Dimensions.get('window').width,
+            height: Dimensions.get('window').height,
+        },
         button: {
             borderRadius: 8,
             paddingVertical: 14,

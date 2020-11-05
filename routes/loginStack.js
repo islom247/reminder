@@ -4,7 +4,7 @@ import Login from "../components/login";
 import Register from "../components/register";
 
 const Stack = createStackNavigator();
-export default ({updateStatus}) => {
+export default () => {
     return (
         <Stack.Navigator
             initialRouteName="Login"
@@ -22,7 +22,8 @@ export default ({updateStatus}) => {
                 headerTintColor: "white"
             }}
         >
-            <Stack.Screen name="Login" component={Login} initialParams={{updateStatus: updateStatus}}/>
+            <Stack.Screen name="Login" component={Login}>
+            </Stack.Screen>
             <Stack.Screen name="Register" component={Register} options={{title: "Sign Up"}}/>
         </Stack.Navigator>
     );

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import TextButton from "../shared/button";
 
-export default ({navigation, updateStatus}) => {
+export default ({navigation}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
@@ -33,7 +33,7 @@ export default ({navigation, updateStatus}) => {
                         text="Log In"
                         color="teal"
                         textColor="white"
-                        onPress={updateStatus}
+                        onPress={() => navigation.navigate("HomeTab", {screen: "Home"})}
                     />
                     <View style={styles.divider}/>
                     <Text style={styles.text}>Don't have an account yet?</Text>
