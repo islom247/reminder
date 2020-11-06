@@ -9,9 +9,11 @@ import {
     Dimensions,
     ImageBackground,
 } from "react-native";
+import {connect} from "react-redux";
+import {signIn} from "../store/actions/authActions";
 import TextButton from "../shared/button";
 
-export default ({navigation}) => {
+const Login = ({navigation, signIn}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
@@ -33,7 +35,7 @@ export default ({navigation}) => {
                         text="Log In"
                         color="teal"
                         textColor="white"
-                        onPress={() => navigation.navigate("HomeTab", {screen: "Home"})}
+                        onPress={() => signIn()/*navigation.navigate("HomeTab", {screen: "Home"})*/}
                     />
                     <View style={styles.divider}/>
                     <Text style={styles.text}>Don't have an account yet?</Text>
@@ -44,6 +46,12 @@ export default ({navigation}) => {
         </ImageBackground>
     );
 }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signIn: () => dispatch(signIn())
+    }
+}
+export default connect(null, mapDispatchToProps)(Login);
 const styles = StyleSheet.create({
     container: {
         flex: 1,

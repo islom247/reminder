@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import TextButton from "../shared/button";
 
-export default () => {
+export default ({navigation}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
@@ -32,7 +32,11 @@ export default () => {
                         style={styles.input}
                         secureTextEntry={true}
                     />
-                    <TextButton text="Register" color="teal" textColor="white"/>
+                    <TextButton
+                        text="Register"
+                        color="teal"
+                        textColor="white"
+                        onPress={() => navigation.navigate("HomeTab", {screen: "Home"})}/>
                 </View>
             </TouchableWithoutFeedback>
         </ImageBackground>

@@ -1,19 +1,12 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 import {StyleSheet, View, Text, ImageBackground, FlatList, TouchableOpacity} from "react-native";
 import Card from "../shared/card";
 import globalStyles from "../styles/globalStyles";
 
 class Home extends Component {
     render() {
-        const texts = [
-            {title: "First", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec."},
-            {title: "Second", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec."},
-            {title: "Third", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec."},
-            {title: "Fourth", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec."},
-            {title: "Fifth", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec."},
-            {title: "Sixth", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec."},
-            {title: "Seventh", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec."},
-        ];
+        const {notes} = this.props;
         return (
             <ImageBackground
                 source={require("../assets/images/zzz.png")}
@@ -22,7 +15,7 @@ class Home extends Component {
             >
                 <View>
                     <FlatList
-                        data={texts}
+                        data={notes}
                         renderItem={({item, index}) => (
                             <TouchableOpacity key={index} onPress={() => {
                                 console.log(index);
@@ -43,4 +36,9 @@ class Home extends Component {
     }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+    return {
+        notes: state.note.notes
+    }
+}
+export default connect(mapStateToProps)(Home);

@@ -4,7 +4,7 @@ import Login from "../components/login";
 import Register from "../components/register";
 
 const Stack = createStackNavigator();
-export default () => {
+export default ({updateStatus}) => {
     return (
         <Stack.Navigator
             initialRouteName="Login"

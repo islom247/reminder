@@ -6,6 +6,7 @@ export default (props = {}) => {
             flex: 1,
             padding: 24,
             paddingTop: 10,
+            paddingBottom: 0,
             backgroundColor: '#fff',
             alignItems: 'center',
             justifyContent: 'center',
