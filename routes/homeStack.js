@@ -8,7 +8,12 @@ import Header from "../shared/header";
 const Stack = createStackNavigator();
 export default () => {
     return (
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+                headerMode: "screen"
+            }}
+        >
             <Stack.Screen
                 name="Home"
                 component={Home}
@@ -22,7 +27,7 @@ export default () => {
                 name="Details"
                 component={Details}
                 options={{
-                    headerTitle: () => <Header title="Details"/>,
+                    headerTitle: () => <Header title="Details" details={true}/>,
                     headerTitleAlign: "center"
                 }}>
             </Stack.Screen>
