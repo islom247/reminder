@@ -1,65 +1,79 @@
-import React from "react";
+import React, {useState} from "react";
+import {AntDesign} from '@expo/vector-icons';
 import {
     StyleSheet,
     View,
     Text,
     TextInput,
-    Keyboard,
     TouchableWithoutFeedback,
-    Dimensions,
+    Keyboard,
     ImageBackground,
+    Dimensions
 } from "react-native";
-import {connect} from "react-redux";
-import {signIn} from "../store/actions/authActions";
 import TextButton from "../shared/button";
 
-const Login = ({navigation, signIn}) => {
+const renderText = (text) => {
+    return <Text>text</Text>
+}
+export default () => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
-            style={styles.container}
+            style={styles.background}
             resizeMode="cover"
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
+                    <Text style={styles.text}>NEW NOTE</Text>
+                    {/*{renderText("Title")}*/}
                     <TextInput
-                        placeholder="Email"
+                        placeholder="Title"
                         style={styles.input}
                     />
                     <TextInput
-                        placeholder="Password"
+                        placeholder="Content"
                         style={styles.input}
-                        secureTextEntry={true}
+                        multiline
+                        numberOfLines={4}
                     />
                     <TextButton
-                        text="Log In"
+                        text="add"
                         color="teal"
                         textColor="white"
-                        onPress={() => signIn()/*navigation.navigate("HomeTab", {screen: "Home"})*/}
+                        onPress={() => console.log("added")}
+                        style={{position: "absolute"}}
                     />
-                    <View style={styles.divider}/>
-                    <Text style={styles.text}>Don't have an account yet?</Text>
-                    <TextButton text="Register" color="teal" textColor="white"
-                                onPress={() => navigation.navigate("Register")}/>
                 </View>
             </TouchableWithoutFeedback>
         </ImageBackground>
     );
 }
-const mapDispatchToProps = (dispatch) => {
-    return {
-        signIn: () => dispatch(signIn())
-    }
-}
-export default connect(null, mapDispatchToProps)(Login);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //padding: 24,
+        alignItems: "center",
+        justifyContent: "flex-start",
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+    background: {
+        flex: 1,
         alignItems: "center",
         justifyContent: "center",
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
+    },
+    addButton: {
+        height: 50,
+        width: 50,
+        backgroundColor: "coral",
+        borderRadius: 100
+    },
+    text: {
+        fontSize: 30,
+        marginTop: 30,
+        color: "black",
+        fontWeight: "bold"
     },
     input: {
         borderWidth: 1,
@@ -67,19 +81,10 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 18,
         borderRadius: 6,
-        width: "70%",
+        width: "90%",
         marginTop: 20,
-        backgroundColor: "#b2d8d8"
+        backgroundColor: "#b2d8d8",
+        textAlignVertical: "top",
+        maxHeight: 300
     },
-    text: {
-        fontSize: 18,
-        marginTop: 20,
-        color: "black"
-    },
-    divider: {
-        borderWidth: 1,
-        width: "75%",
-        borderColor: "#888",
-        marginTop: 20
-    }
 });

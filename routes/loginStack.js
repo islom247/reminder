@@ -17,9 +17,9 @@ export default ({updateStatus}) => {
                     flex: 1,
                     textAlign: "center",
                     alignSelf: "center",
-                    color: "white"
+                    color: "black"
                 },
-                headerTintColor: "white"
+                headerTintColor: "black"
             }}
         >
             <Stack.Screen name="Login" component={Login}>
