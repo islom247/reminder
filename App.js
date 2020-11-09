@@ -17,15 +17,6 @@ export default function App() {
     }
     return (
         <Provider store={store}>
-            {/*<NavigationContainer>*/}
-            {/*    /!*<Stack.Navigator initialRouteName="LoginStack" headerMode="none">*!/*/}
-            {/*    /!*    <Stack.Screen name="LoginStack" component={LoginStack}>*!/*/}
-            {/*    /!*    </Stack.Screen>*!/*/}
-            {/*    /!*    <Stack.Screen name="HomeTab" component={HomeTab}>*!/*/}
-            {/*    /!*    </Stack.Screen>*!/*/}
-            {/*    /!*</Stack.Navigator>*!/*/}
-
-            {/*</NavigationContainer>*/}
             <RootNavigation/>
         </Provider>
     );

@@ -20,11 +20,11 @@ const renderText = (text) => {
 }
 const reviewSchema = yup.object({
     title: yup.string()
-        .required()
-        .min(5),
+        .required("Title cannot be empty.")
+        .min(5, "Title should be at least 5 characters."),
     content: yup.string()
-        .required()
-        .min(10)
+        .required("Content cannot be empty.")
+        .min(10, "Content should be at least 10 characters.")
 });
 const AddNote = ({addNote}) => {
     return (
@@ -38,12 +38,12 @@ const AddNote = ({addNote}) => {
                     <Text style={styles.text}>NEW NOTE</Text>
                     <Formik
                         initialValues={{title: "", content: ""}}
+                        validationSchema={reviewSchema}
                         onSubmit={(values, actions) => {
                             actions.resetForm();
                             console.log(values);
                             addNote(values);
                         }}
-                        validationSchema={reviewSchema}
                     >
                         {(formikProps) => (
                             <>
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderColor: "#ddd",
         padding: 10,
         fontSize: 18,
         borderRadius: 6,
@@ -127,7 +126,16 @@ const styles = StyleSheet.create({
         marginTop: 20,
         backgroundColor: "#b2d8d8",
         textAlignVertical: "top",
-        maxHeight: 300
+        maxHeight: 300,
+        borderColor: "#505050",
+        elevation: 3,
+        shadowOffset: {
+            width: 1,
+            height: 1
+        },
+        shadowColor: "#333",
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
     },
     errorText: {
         color: "crimson",

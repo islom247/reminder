@@ -3,3 +3,13 @@ export const signIn = () => {
         dispatch({type: "LOGIN_SUCCESS"});
     }
 }
+export const register = () => {
+    return (dispatch, getState) => {
+        dispatch({type: "REGISTER_SUCCESS"});
+    }
+}
+export const signOut = () => {
+    return (dispatch, getState) => {
+        dispatch({type: "LOGOUT"});
+    }
+}

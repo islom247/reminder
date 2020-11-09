@@ -12,6 +12,7 @@ export default (props) => {
 }
 const styles = StyleSheet.create({
     card: {
+        flex: 1,
         borderColor: "#505050",
         borderWidth: 1,
         borderRadius: 6,

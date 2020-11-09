@@ -23,7 +23,7 @@ class Home extends Component {
                             }}>
                                 <Card>
                                     <Text style={{fontWeight: "bold"}}>{item.title}</Text>
-                                    <Text>{item.content}</Text>
+                                    <Text numberOfLines={2}>{item.content}</Text>
                                 </Card>
                             </TouchableOpacity>
                         )}

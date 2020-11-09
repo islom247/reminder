@@ -8,6 +8,17 @@ const authReducer = (state = initState, action) => {
                 ...state,
                 status: true
             }
+        case "LOGOUT": {
+            return {
+                ...state,
+                status: false
+            }
+        }
+        case "REGISTER_SUCCESS":
+            return {
+                ...state,
+                status: true
+            }
         default:
             return state;
     }

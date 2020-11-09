@@ -10,9 +10,18 @@ import {
     ImageBackground,
 } from "react-native";
 import {connect} from "react-redux";
+import {Formik} from "formik";
+import * as yup from "yup";
 import {signIn} from "../store/actions/authActions";
 import TextButton from "../shared/button";
 
+const reviewSchema = yup.object({
+    email: yup.string()
+        .required("Email cannot be empty")
+        .email("Email must be a valid email"),
+    password: yup.string()
+        .required("Password cannot empty")
+});
 const Login = ({navigation, signIn}) => {
     return (
         <ImageBackground
@@ -22,25 +31,50 @@ const Login = ({navigation, signIn}) => {
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
-                    <TextInput
-                        placeholder="Email"
-                        style={styles.input}
-                    />
-                    <TextInput
-                        placeholder="Password"
-                        style={styles.input}
-                        secureTextEntry={true}
-                    />
-                    <TextButton
-                        text="Log In"
-                        color="teal"
-                        textColor="white"
-                        onPress={() => signIn()/*navigation.navigate("HomeTab", {screen: "Home"})*/}
-                    />
-                    <View style={styles.divider}/>
-                    <Text style={styles.text}>Don't have an account yet?</Text>
-                    <TextButton text="Register" color="teal" textColor="white"
-                                onPress={() => navigation.navigate("Register")}/>
+                    <Formik
+                        initialValues={{email: "", password: ""}}
+                        validationSchema={reviewSchema}
+                        onSubmit={(values, action) => {
+                            console.log(values);
+                            signIn();
+                        }}
+                    >
+                        {(formikProps) => (
+                            <>
+                                <TextInput
+                                    placeholder="Email"
+                                    style={styles.input}
+                                    onChangeText={formikProps.handleChange("email")}
+                                    value={formikProps.values.email}
+                                    onBlur={formikProps.handleBlur("email")}
+                                />
+                                <Text style={styles.errorText}>
+                                    {formikProps.touched.email && formikProps.errors.email}
+                                </Text>
+                                <TextInput
+                                    placeholder="Password"
+                                    style={styles.input}
+                                    secureTextEntry={true}
+                                    onChangeText={formikProps.handleChange("password")}
+                                    value={formikProps.values.password}
+                                    onBlur={formikProps.handleBlur("password")}
+                                />
+                                <Text style={styles.errorText}>
+                                    {formikProps.touched.password && formikProps.errors.password}
+                                </Text>
+                                <TextButton
+                                    text="Log In"
+                                    color="teal"
+                                    textColor="white"
+                                    onPress={formikProps.handleSubmit}
+                                />
+                                <View style={styles.divider}/>
+                                <Text style={styles.text}>Don't have an account yet?</Text>
+                                <TextButton text="Register" color="teal" textColor="white"
+                                            onPress={() => navigation.navigate("Register")}/>
+                            </>
+                        )}
+                    </Formik>
                 </View>
             </TouchableWithoutFeedback>
         </ImageBackground>
@@ -63,13 +97,21 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderColor: "#ddd",
         padding: 10,
         fontSize: 18,
         borderRadius: 6,
         width: "70%",
         marginTop: 20,
-        backgroundColor: "#b2d8d8"
+        backgroundColor: "#b2d8d8",
+        borderColor: "#505050",
+        elevation: 3,
+        shadowOffset: {
+            width: 1,
+            height: 1
+        },
+        shadowColor: "#333",
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
     },
     text: {
         fontSize: 18,
@@ -81,5 +123,12 @@ const styles = StyleSheet.create({
         width: "75%",
         borderColor: "#888",
         marginTop: 20
+    },
+    errorText: {
+        color: "crimson",
+        fontWeight: "bold",
+        marginBottom: 6,
+        marginTop: 6,
+        textAlign: "center"
     }
 });
