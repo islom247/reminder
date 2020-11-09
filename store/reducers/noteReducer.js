@@ -10,6 +10,14 @@ const initState = {
     ]
 };
 const noteReducer = (state = initState, action) => {
-    return state;
+    switch (action.type) {
+        case "ADD_NOTE":
+            return {
+                ...state,
+                notes: [action.note, ...state.notes]
+            }
+        default:
+            return state;
+    }
 }
 export default noteReducer;

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {AntDesign} from '@expo/vector-icons';
+import {connect} from "react-redux";
+import {addNote} from "../store/actions/noteActions";
 import {
     StyleSheet,
     View,
@@ -10,12 +11,22 @@ import {
     ImageBackground,
     Dimensions
 } from "react-native";
+import {Formik} from "formik";
+import * as yup from "yup";
 import TextButton from "../shared/button";
 
 const renderText = (text) => {
     return <Text>text</Text>
 }
-export default () => {
+const reviewSchema = yup.object({
+    title: yup.string()
+        .required()
+        .min(5),
+    content: yup.string()
+        .required()
+        .min(10)
+});
+const AddNote = ({addNote}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
@@ -25,29 +36,60 @@ export default () => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View style={styles.container}>
                     <Text style={styles.text}>NEW NOTE</Text>
-                    {/*{renderText("Title")}*/}
-                    <TextInput
-                        placeholder="Title"
-                        style={styles.input}
-                    />
-                    <TextInput
-                        placeholder="Content"
-                        style={styles.input}
-                        multiline
-                        numberOfLines={4}
-                    />
-                    <TextButton
-                        text="add"
-                        color="teal"
-                        textColor="white"
-                        onPress={() => console.log("added")}
-                        style={{position: "absolute"}}
-                    />
+                    <Formik
+                        initialValues={{title: "", content: ""}}
+                        onSubmit={(values, actions) => {
+                            actions.resetForm();
+                            console.log(values);
+                            addNote(values);
+                        }}
+                        validationSchema={reviewSchema}
+                    >
+                        {(formikProps) => (
+                            <>
+                                {/*{renderText("Title")}*/}
+                                <TextInput
+                                    placeholder="Title"
+                                    style={styles.input}
+                                    onChangeText={formikProps.handleChange("title")}
+                                    value={formikProps.values.title}
+                                    onBlur={formikProps.handleBlur("title")}
+                                />
+                                <Text style={styles.errorText}>
+                                    {formikProps.touched.title && formikProps.errors.title}
+                                </Text>
+                                <TextInput
+                                    placeholder="Content"
+                                    style={styles.input}
+                                    multiline
+                                    numberOfLines={4}
+                                    onChangeText={formikProps.handleChange("content")}
+                                    value={formikProps.values.content}
+                                    onBlur={formikProps.handleBlur("content")}
+                                />
+                                <Text style={styles.errorText}>
+                                    {formikProps.touched.content && formikProps.errors.content}
+                                </Text>
+                                <TextButton
+                                    text="add"
+                                    color="teal"
+                                    textColor="white"
+                                    onPress={formikProps.handleSubmit}
+                                />
+                            </>
+                        )}
+                    </Formik>
                 </View>
             </TouchableWithoutFeedback>
         </ImageBackground>
     );
 }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addNote: (note) => dispatch(addNote(note))
+    }
+}
+export default connect(null, mapDispatchToProps)(AddNote);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -87,4 +129,11 @@ const styles = StyleSheet.create({
         textAlignVertical: "top",
         maxHeight: 300
     },
+    errorText: {
+        color: "crimson",
+        fontWeight: "bold",
+        marginBottom: 6,
+        marginTop: 6,
+        textAlign: "center"
+    }
 });
