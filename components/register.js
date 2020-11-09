@@ -25,10 +25,10 @@ const reviewSchema = yup.object({
     password: yup
         .string()
         .required("Password cannot be empty")
-        .min(5, "Password should be at least 5 characters")
+        .min(6, "Password should be at least 6 characters")
         .matches(/[a - zA - Z]/, "Password can only contain Latin letters")
 });
-const Register = ({navigation, register}) => {
+const Register = ({navigation, register, register_error}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
@@ -43,7 +43,7 @@ const Register = ({navigation, register}) => {
                         onSubmit={(values, actions) => {
                             actions.resetForm();
                             console.log(values);
-                            register();
+                            register({name: values.name, email: values.email, password: values.password});
                         }}
                     >
                         {(formikProps) => (
@@ -55,9 +55,11 @@ const Register = ({navigation, register}) => {
                                     value={formikProps.values.name}
                                     onBlur={formikProps.handleBlur("name")}
                                 />
+                                {formikProps.touched.name &&
                                 <Text style={styles.errorText}>
-                                    {formikProps.touched.name && formikProps.errors.name}
+                                    {formikProps.errors.name}
                                 </Text>
+                                }
                                 <TextInput
                                     placeholder="Email"
                                     style={styles.input}
@@ -65,9 +67,12 @@ const Register = ({navigation, register}) => {
                                     value={formikProps.values.email}
                                     onBlur={formikProps.handleBlur("email")}
                                 />
+
+                                {formikProps.touched.email &&
                                 <Text style={styles.errorText}>
-                                    {formikProps.touched.email && formikProps.errors.email}
+                                    {formikProps.errors.email}
                                 </Text>
+                                }
                                 <TextInput
                                     placeholder="Password"
                                     style={styles.input}
@@ -76,14 +81,25 @@ const Register = ({navigation, register}) => {
                                     value={formikProps.values.password}
                                     onBlur={formikProps.handleBlur("password")}
                                 />
+
+                                {formikProps.touched.password &&
                                 <Text style={styles.errorText}>
-                                    {formikProps.touched.password && formikProps.errors.password}
+                                    {formikProps.errors.password}
                                 </Text>
+                                }
+
                                 <TextButton
                                     text="Register"
                                     color="teal"
                                     textColor="white"
-                                    onPress={formikProps.handleSubmit}/>
+                                    onPress={formikProps.handleSubmit}
+                                />
+                                {
+                                    register_error &&
+                                    <Text style={styles.errorText}>
+                                        {register_error.toString()}
+                                    </Text>
+                                }
                             </>
                         )}
                     </Formik>
@@ -92,12 +108,17 @@ const Register = ({navigation, register}) => {
         </ImageBackground>
     );
 }
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
     return {
-        register: () => dispatch(register())
+        register_error: state.auth.register_error
     }
 }
-export default connect(null, mapDispatchToProps)(Register);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        register: (newUser) => dispatch(register(newUser))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -113,7 +134,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         borderRadius: 6,
         width: "70%",
-        marginTop: 10,
+        marginTop: 20,
         backgroundColor: "#b2d8d8",
         borderColor: "#505050",
         elevation: 3,

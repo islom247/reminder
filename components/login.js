@@ -8,6 +8,7 @@ import {
     TouchableWithoutFeedback,
     Dimensions,
     ImageBackground,
+    KeyboardAvoidingView
 } from "react-native";
 import {connect} from "react-redux";
 import {Formik} from "formik";
@@ -30,7 +31,9 @@ const Login = ({navigation, signIn}) => {
             resizeMode="cover"
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.container}>
+                <View
+                    style={styles.container}
+                >
                     <Formik
                         initialValues={{email: "", password: ""}}
                         validationSchema={reviewSchema}
@@ -48,9 +51,13 @@ const Login = ({navigation, signIn}) => {
                                     value={formikProps.values.email}
                                     onBlur={formikProps.handleBlur("email")}
                                 />
+
+                                {formikProps.touched.email &&
                                 <Text style={styles.errorText}>
-                                    {formikProps.touched.email && formikProps.errors.email}
+                                    {formikProps.errors.email}
                                 </Text>
+                                }
+
                                 <TextInput
                                     placeholder="Password"
                                     style={styles.input}
@@ -59,9 +66,11 @@ const Login = ({navigation, signIn}) => {
                                     value={formikProps.values.password}
                                     onBlur={formikProps.handleBlur("password")}
                                 />
+                                {formikProps.touched.password &&
                                 <Text style={styles.errorText}>
-                                    {formikProps.touched.password && formikProps.errors.password}
+                                    {formikProps.errors.password}
                                 </Text>
+                                }
                                 <TextButton
                                     text="Log In"
                                     color="teal"

@@ -9,7 +9,8 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
     ImageBackground,
-    Dimensions
+    Dimensions,
+    KeyboardAvoidingView
 } from "react-native";
 import {Formik} from "formik";
 import * as yup from "yup";
@@ -34,7 +35,7 @@ const AddNote = ({addNote}) => {
             resizeMode="cover"
         >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View style={styles.container}>
+                <KeyboardAvoidingView style={styles.container} behavior="padding">
                     <Text style={styles.text}>NEW NOTE</Text>
                     <Formik
                         initialValues={{title: "", content: ""}}
@@ -55,9 +56,12 @@ const AddNote = ({addNote}) => {
                                     value={formikProps.values.title}
                                     onBlur={formikProps.handleBlur("title")}
                                 />
+                                {formikProps.touched.title &&
                                 <Text style={styles.errorText}>
-                                    {formikProps.touched.title && formikProps.errors.title}
+                                    {formikProps.errors.title}
                                 </Text>
+                                }
+
                                 <TextInput
                                     placeholder="Content"
                                     style={styles.input}
@@ -67,9 +71,12 @@ const AddNote = ({addNote}) => {
                                     value={formikProps.values.content}
                                     onBlur={formikProps.handleBlur("content")}
                                 />
+
+                                {formikProps.touched.content &&
                                 <Text style={styles.errorText}>
-                                    {formikProps.touched.content && formikProps.errors.content}
+                                    {formikProps.errors.content}
                                 </Text>
+                                }
                                 <TextButton
                                     text="add"
                                     color="teal"
@@ -79,7 +86,7 @@ const AddNote = ({addNote}) => {
                             </>
                         )}
                     </Formik>
-                </View>
+                </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         </ImageBackground>
     );
