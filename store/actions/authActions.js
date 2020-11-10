@@ -1,9 +1,23 @@
 import firebaseApp from "../../config/firebaseConfig";
 
 const firestore = firebaseApp.firestore();
-export const signIn = () => {
+export const signIn = (credentials) => {
     return (dispatch, getState) => {
-        dispatch({type: "LOGIN_SUCCESS"});
+        firebaseApp
+            .auth()
+            .signInWithEmailAndPassword(credentials.email, credentials.password)
+            .then(response => {
+                console.log(response);
+                dispatch({type: "LOGIN_SUCCESS"});
+            })
+            .catch(err => {
+                let error = "";
+                switch (err.code) {
+                    case "auth/user-not-found":
+                        error = "There is no user registered with the provided email."
+                }
+                dispatch({type: "LOGIN_ERROR", loginError: error});
+            })
     }
 }
 export const register = (newUser) => {
@@ -26,13 +40,23 @@ export const register = (newUser) => {
                 dispatch({type: "REGISTER_SUCCESS"});
             })
             .catch(err => {
-                dispatch({type: "REGISTER_ERROR", register_error: err});
-                console.log("error is: ", err)
+                let error = "";
+                switch (err.code) {
+                    case "auth/email-already-in-use":
+                        error = "The email address is already in use by another account."
+                }
+                dispatch({type: "REGISTER_ERROR", registerError: error});
+                console.log("error is: ", err.code)
             })
     }
 }
 export const signOut = () => {
     return (dispatch, getState) => {
-        dispatch({type: "LOGOUT"});
+        firebaseApp
+            .auth()
+            .signOut()
+            .then(() => {
+                dispatch({type: "LOGOUT"});
+            });
     }
 }

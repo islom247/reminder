@@ -26,9 +26,20 @@ const reviewSchema = yup.object({
         .string()
         .required("Password cannot be empty")
         .min(6, "Password should be at least 6 characters")
-        .matches(/[a - zA - Z]/, "Password can only contain Latin letters")
+        .matches(/^[a - zA - Z]*/, "Password can only contain Latin letters")
 });
-const Register = ({navigation, register, register_error}) => {
+const renderError = (formikProps, inputFieldName) => {
+    if (formikProps.touched[inputFieldName] &&
+        formikProps.errors[inputFieldName] &&
+        formikProps.errors[inputFieldName].length > 0) {
+        return (
+            <Text style={styles.errorText}>
+                {formikProps.errors[inputFieldName]}
+            </Text>
+        );
+    }
+}
+const Register = ({navigation, register, registerError}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
@@ -41,7 +52,7 @@ const Register = ({navigation, register, register_error}) => {
                         initialValues={{name: "", email: "", password: ""}}
                         validationSchema={reviewSchema}
                         onSubmit={(values, actions) => {
-                            actions.resetForm();
+                            //actions.resetForm();
                             console.log(values);
                             register({name: values.name, email: values.email, password: values.password});
                         }}
@@ -55,11 +66,7 @@ const Register = ({navigation, register, register_error}) => {
                                     value={formikProps.values.name}
                                     onBlur={formikProps.handleBlur("name")}
                                 />
-                                {formikProps.touched.name &&
-                                <Text style={styles.errorText}>
-                                    {formikProps.errors.name}
-                                </Text>
-                                }
+                                {renderError(formikProps, "name")}
                                 <TextInput
                                     placeholder="Email"
                                     style={styles.input}
@@ -67,12 +74,7 @@ const Register = ({navigation, register, register_error}) => {
                                     value={formikProps.values.email}
                                     onBlur={formikProps.handleBlur("email")}
                                 />
-
-                                {formikProps.touched.email &&
-                                <Text style={styles.errorText}>
-                                    {formikProps.errors.email}
-                                </Text>
-                                }
+                                {renderError(formikProps, "email")}
                                 <TextInput
                                     placeholder="Password"
                                     style={styles.input}
@@ -81,13 +83,7 @@ const Register = ({navigation, register, register_error}) => {
                                     value={formikProps.values.password}
                                     onBlur={formikProps.handleBlur("password")}
                                 />
-
-                                {formikProps.touched.password &&
-                                <Text style={styles.errorText}>
-                                    {formikProps.errors.password}
-                                </Text>
-                                }
-
+                                {renderError(formikProps, "password")}
                                 <TextButton
                                     text="Register"
                                     color="teal"
@@ -95,9 +91,9 @@ const Register = ({navigation, register, register_error}) => {
                                     onPress={formikProps.handleSubmit}
                                 />
                                 {
-                                    register_error &&
+                                    registerError &&
                                     <Text style={styles.errorText}>
-                                        {register_error.toString()}
+                                        {registerError.toString()}
                                     </Text>
                                 }
                             </>
@@ -110,7 +106,7 @@ const Register = ({navigation, register, register_error}) => {
 }
 const mapStateToProps = (state) => {
     return {
-        register_error: state.auth.register_error
+        registerError: state.auth.registerError
     }
 }
 const mapDispatchToProps = (dispatch) => {

@@ -7,8 +7,7 @@ import {
     Keyboard,
     TouchableWithoutFeedback,
     Dimensions,
-    ImageBackground,
-    KeyboardAvoidingView
+    ImageBackground
 } from "react-native";
 import {connect} from "react-redux";
 import {Formik} from "formik";
@@ -23,7 +22,18 @@ const reviewSchema = yup.object({
     password: yup.string()
         .required("Password cannot empty")
 });
-const Login = ({navigation, signIn}) => {
+const renderError = (formikProps, inputFieldName) => {
+    if (formikProps.touched[inputFieldName] &&
+        formikProps.errors[inputFieldName] &&
+        formikProps.errors[inputFieldName].length > 0) {
+        return (
+            <Text style={styles.errorText}>
+                {formikProps.errors[inputFieldName]}
+            </Text>
+        );
+    }
+}
+const Login = ({navigation, signIn, loginError}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
@@ -39,7 +49,7 @@ const Login = ({navigation, signIn}) => {
                         validationSchema={reviewSchema}
                         onSubmit={(values, action) => {
                             console.log(values);
-                            signIn();
+                            signIn(values);
                         }}
                     >
                         {(formikProps) => (
@@ -51,13 +61,7 @@ const Login = ({navigation, signIn}) => {
                                     value={formikProps.values.email}
                                     onBlur={formikProps.handleBlur("email")}
                                 />
-
-                                {formikProps.touched.email &&
-                                <Text style={styles.errorText}>
-                                    {formikProps.errors.email}
-                                </Text>
-                                }
-
+                                {renderError(formikProps, "email")}
                                 <TextInput
                                     placeholder="Password"
                                     style={styles.input}
@@ -66,17 +70,19 @@ const Login = ({navigation, signIn}) => {
                                     value={formikProps.values.password}
                                     onBlur={formikProps.handleBlur("password")}
                                 />
-                                {formikProps.touched.password &&
-                                <Text style={styles.errorText}>
-                                    {formikProps.errors.password}
-                                </Text>
-                                }
+                                {renderError(formikProps, "password")}
                                 <TextButton
                                     text="Log In"
                                     color="teal"
                                     textColor="white"
                                     onPress={formikProps.handleSubmit}
                                 />
+                                {
+                                    loginError &&
+                                    <Text style={styles.errorText}>
+                                        {loginError}
+                                    </Text>
+                                }
                                 <View style={styles.divider}/>
                                 <Text style={styles.text}>Don't have an account yet?</Text>
                                 <TextButton text="Register" color="teal" textColor="white"
@@ -89,12 +95,17 @@ const Login = ({navigation, signIn}) => {
         </ImageBackground>
     );
 }
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
     return {
-        signIn: () => dispatch(signIn())
+        loginError: state.auth.loginError
     }
 }
-export default connect(null, mapDispatchToProps)(Login);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        signIn: (credentials) => dispatch(signIn(credentials))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -138,6 +149,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginBottom: 6,
         marginTop: 6,
-        textAlign: "center"
+        textAlign: "center",
+        marginHorizontal: 10
     }
 });

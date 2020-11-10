@@ -27,6 +27,17 @@ const reviewSchema = yup.object({
         .required("Content cannot be empty.")
         .min(10, "Content should be at least 10 characters.")
 });
+const renderError = (formikProps, inputFieldName) => {
+    if (formikProps.touched[inputFieldName] &&
+        formikProps.errors[inputFieldName] &&
+        formikProps.errors[inputFieldName].length > 0) {
+        return (
+            <Text style={styles.errorText}>
+                {formikProps.errors[inputFieldName]}
+            </Text>
+        );
+    }
+}
 const AddNote = ({addNote}) => {
     return (
         <ImageBackground
@@ -56,12 +67,7 @@ const AddNote = ({addNote}) => {
                                     value={formikProps.values.title}
                                     onBlur={formikProps.handleBlur("title")}
                                 />
-                                {formikProps.touched.title &&
-                                <Text style={styles.errorText}>
-                                    {formikProps.errors.title}
-                                </Text>
-                                }
-
+                                {renderError(formikProps, "title")}
                                 <TextInput
                                     placeholder="Content"
                                     style={styles.input}
@@ -71,12 +77,7 @@ const AddNote = ({addNote}) => {
                                     value={formikProps.values.content}
                                     onBlur={formikProps.handleBlur("content")}
                                 />
-
-                                {formikProps.touched.content &&
-                                <Text style={styles.errorText}>
-                                    {formikProps.errors.content}
-                                </Text>
-                                }
+                                {renderError(formikProps, "content")}
                                 <TextButton
                                     text="add"
                                     color="teal"

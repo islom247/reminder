@@ -6,23 +6,32 @@ const authReducer = (state = initState, action) => {
         case "LOGIN_SUCCESS":
             return {
                 ...state,
-                status: true
+                status: true,
+                loginError: null
+            }
+        case "LOGIN_ERROR":
+            return {
+                ...state,
+                loginError: action.loginError
             }
         case "LOGOUT": {
             return {
                 ...state,
-                status: false
+                status: false,
+                loginError: null,
+                registerError: null
             }
         }
         case "REGISTER_SUCCESS":
             return {
                 ...state,
-                status: true
+                status: true,
+                registerError: null
             }
         case "REGISTER_ERROR": {
             return {
                 ...state,
-                register_error: action.register_error
+                registerError: action.registerError
             }
         }
         default:
