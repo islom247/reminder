@@ -1,5 +1,6 @@
 import React from "react";
 import {View, Text, StyleSheet, ScrollView} from "react-native";
+import moment from "moment";
 import Card from "../shared/card";
 
 export default ({route}) => {
@@ -7,8 +8,12 @@ export default ({route}) => {
         <View style={styles.details}>
             <Card>
                 <ScrollView showsVerticalScrollIndicator={true}>
+                    <Text style={styles.headText}>Date of creation</Text>
+                    <Text style={styles.text}>
+                        {moment(route.params.item.createdAt.toDate()).format('MMMM Do YYYY, h:mm:ss a')}
+                    </Text>
                     <Text style={styles.headText}>Title</Text>
-                    <Text style={{...styles.text, fontWeight: "bold", fontSize: 15, paddingBottom: 15}}>{route.params.item.title}</Text>
+                    <Text style={styles.text}>{route.params.item.title}</Text>
                     <Text style={styles.headText}>Content</Text>
                     <Text style={styles.text}>{route.params.item.content}</Text>
                 </ScrollView>
@@ -25,17 +30,19 @@ const styles = StyleSheet.create({
     },
     text: {
         lineHeight: 25,
-        alignSelf: "center",
+        //alignSelf: "center",
         color: "teal",
-        fontSize: 15
+        fontSize: 15,
+        paddingBottom: 16
     },
     headText: {
-        alignSelf: "center",
-        letterSpacing: 1,
+        //alignSelf: "center",
+        letterSpacing: 0,
         lineHeight: 25,
         fontWeight: "bold",
         fontSize: 20,
         color: "black",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
+
     }
 });

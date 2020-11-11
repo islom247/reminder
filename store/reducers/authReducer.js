@@ -6,6 +6,7 @@ const authReducer = (state = initState, action) => {
         case "LOGIN_SUCCESS":
             return {
                 ...state,
+                userId: action.userId,
                 status: true,
                 loginError: null
             }

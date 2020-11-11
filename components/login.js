@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import {Formik} from "formik";
 import * as yup from "yup";
 import {signIn} from "../store/actions/authActions";
+import {setImageLoaded} from "../store/actions/componentActions";
 import TextButton from "../shared/button";
 
 const reviewSchema = yup.object({
@@ -33,76 +34,81 @@ const renderError = (formikProps, inputFieldName) => {
         );
     }
 }
-const Login = ({navigation, signIn, loginError}) => {
+const Login = ({navigation, signIn, loginError, imageLoaded, setImageLoaded}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
             style={styles.container}
             resizeMode="cover"
+            onLoad={() => setImageLoaded()}
         >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View
-                    style={styles.container}
-                >
-                    <Formik
-                        initialValues={{email: "", password: ""}}
-                        validationSchema={reviewSchema}
-                        onSubmit={(values, action) => {
-                            console.log(values);
-                            signIn(values);
-                        }}
+            {!imageLoaded ? null :
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <View
+                        style={styles.container}
                     >
-                        {(formikProps) => (
-                            <>
-                                <TextInput
-                                    placeholder="Email"
-                                    style={styles.input}
-                                    onChangeText={formikProps.handleChange("email")}
-                                    value={formikProps.values.email}
-                                    onBlur={formikProps.handleBlur("email")}
-                                />
-                                {renderError(formikProps, "email")}
-                                <TextInput
-                                    placeholder="Password"
-                                    style={styles.input}
-                                    secureTextEntry={true}
-                                    onChangeText={formikProps.handleChange("password")}
-                                    value={formikProps.values.password}
-                                    onBlur={formikProps.handleBlur("password")}
-                                />
-                                {renderError(formikProps, "password")}
-                                <TextButton
-                                    text="Log In"
-                                    color="teal"
-                                    textColor="white"
-                                    onPress={formikProps.handleSubmit}
-                                />
-                                {
-                                    loginError &&
-                                    <Text style={styles.errorText}>
-                                        {loginError}
-                                    </Text>
-                                }
-                                <View style={styles.divider}/>
-                                <Text style={styles.text}>Don't have an account yet?</Text>
-                                <TextButton text="Register" color="teal" textColor="white"
-                                            onPress={() => navigation.navigate("Register")}/>
-                            </>
-                        )}
-                    </Formik>
-                </View>
-            </TouchableWithoutFeedback>
+                        <Formik
+                            initialValues={{email: "", password: ""}}
+                            validationSchema={reviewSchema}
+                            onSubmit={(values, action) => {
+                                console.log(values);
+                                signIn(values);
+                            }}
+                        >
+                            {(formikProps) => (
+                                <>
+                                    <TextInput
+                                        placeholder="Email"
+                                        style={styles.input}
+                                        onChangeText={formikProps.handleChange("email")}
+                                        value={formikProps.values.email}
+                                        onBlur={formikProps.handleBlur("email")}
+                                    />
+                                    {renderError(formikProps, "email")}
+                                    <TextInput
+                                        placeholder="Password"
+                                        style={styles.input}
+                                        secureTextEntry={true}
+                                        onChangeText={formikProps.handleChange("password")}
+                                        value={formikProps.values.password}
+                                        onBlur={formikProps.handleBlur("password")}
+                                    />
+                                    {renderError(formikProps, "password")}
+                                    <TextButton
+                                        text="Log In"
+                                        color="teal"
+                                        textColor="white"
+                                        onPress={formikProps.handleSubmit}
+                                    />
+                                    {
+                                        loginError &&
+                                        <Text style={styles.errorText}>
+                                            {loginError}
+                                        </Text>
+                                    }
+                                    <View style={styles.divider}/>
+                                    <Text style={styles.text}>Don't have an account yet?</Text>
+                                    <TextButton text="Register" color="teal" textColor="white"
+                                                onPress={() => navigation.navigate("Register")}/>
+                                </>
+                            )}
+                        </Formik>
+                    </View>
+                </TouchableWithoutFeedback>
+            }
         </ImageBackground>
     );
 }
 const mapStateToProps = (state) => {
     return {
-        loginError: state.auth.loginError
+        loginError: state.auth.loginError,
+        imageLoaded: state.component.imageLoaded
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        signIn: (credentials) => dispatch(signIn(credentials))
+        signIn: (credentials) => dispatch(signIn(credentials)),
+        setImageLoaded: () => dispatch(setImageLoaded())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

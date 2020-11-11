@@ -1,9 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 import {connect} from "react-redux";
 import {addNote} from "../store/actions/noteActions";
 import {
     StyleSheet,
-    View,
     Text,
     TextInput,
     TouchableWithoutFeedback,
@@ -16,9 +15,6 @@ import {Formik} from "formik";
 import * as yup from "yup";
 import TextButton from "../shared/button";
 
-const renderText = (text) => {
-    return <Text>text</Text>
-}
 const reviewSchema = yup.object({
     title: yup.string()
         .required("Title cannot be empty.")
@@ -38,7 +34,7 @@ const renderError = (formikProps, inputFieldName) => {
         );
     }
 }
-const AddNote = ({addNote}) => {
+const AddNote = ({addNote, addNoteError}) => {
     return (
         <ImageBackground
             source={require("../assets/images/zzz.png")}
@@ -84,6 +80,12 @@ const AddNote = ({addNote}) => {
                                     textColor="white"
                                     onPress={formikProps.handleSubmit}
                                 />
+                                {
+                                    addNoteError &&
+                                    <Text style={styles.errorText}>
+                                        {addNoteError}
+                                    </Text>
+                                }
                             </>
                         )}
                     </Formik>
@@ -92,12 +94,17 @@ const AddNote = ({addNote}) => {
         </ImageBackground>
     );
 }
+const mapStateToProps = (state) => {
+    return {
+        addNoteError: state.note.addNoteError
+    }
+}
 const mapDispatchToProps = (dispatch) => {
     return {
         addNote: (note) => dispatch(addNote(note))
     }
 }
-export default connect(null, mapDispatchToProps)(AddNote);
+export default connect(mapStateToProps, mapDispatchToProps)(AddNote);
 const styles = StyleSheet.create({
     container: {
         flex: 1,

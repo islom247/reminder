@@ -7,8 +7,8 @@ export const signIn = (credentials) => {
             .auth()
             .signInWithEmailAndPassword(credentials.email, credentials.password)
             .then(response => {
-                console.log(response);
-                dispatch({type: "LOGIN_SUCCESS"});
+                console.log(response.user.uid);
+                dispatch({type: "LOGIN_SUCCESS", userId: response.user.uid});
             })
             .catch(err => {
                 let error = "";
