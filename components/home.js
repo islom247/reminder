@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {StyleSheet, View, Text, ImageBackground, FlatList, TouchableOpacity} from "react-native";
+import {ActivityIndicator, StyleSheet, View, Text, ImageBackground, FlatList, TouchableOpacity} from "react-native";
 import Card from "../shared/card";
 import {getNotes} from "../store/actions/noteActions";
 import globalStyles from "../styles/globalStyles";
@@ -8,6 +8,10 @@ import globalStyles from "../styles/globalStyles";
 class Home extends Component {
     componentDidMount() {
         this.props.getNotes();
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        //this.props.getNotes();
     }
 
     render() {
@@ -22,22 +26,28 @@ class Home extends Component {
                     {getNotesError ?
                         <Text>{getNotesError}</Text>
                         :
-                        <FlatList
-                            data={notes}
-                            renderItem={({item, index}) => (
-                                <TouchableOpacity key={index} onPress={() => {
-                                    console.log(index);
-                                    this.props.navigation.navigate("Details", {item});
-                                }}>
-                                    <Card>
-                                        <Text style={{fontWeight: "bold"}}>{item.title}</Text>
-                                        <Text numberOfLines={2}>{item.content}</Text>
-                                    </Card>
-                                </TouchableOpacity>
-                            )}
-                            keyExtractor={(item, index) => index.toString()}
-                            showsVerticalScrollIndicator={false}
-                        />}
+                        !notes ? <ActivityIndicator
+                                size="large"
+                                color= "teal"
+                            /> :
+                            notes.length === 0 ?
+                                <Text style={styles.text}>You haven't created any notes yet.</Text> :
+                                <FlatList
+                                    data={notes}
+                                    renderItem={({item, index}) => (
+                                        <TouchableOpacity key={index} onPress={() => {
+                                            console.log(index);
+                                            this.props.navigation.navigate("Details", {item});
+                                        }}>
+                                            <Card>
+                                                <Text style={{fontWeight: "bold"}}>{item.title}</Text>
+                                                <Text numberOfLines={2}>{item.content}</Text>
+                                            </Card>
+                                        </TouchableOpacity>
+                                    )}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    showsVerticalScrollIndicator={false}
+                                />}
                 </View>
             </ImageBackground>
         );
@@ -62,5 +72,10 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: "flex-start",
+    },
+    text: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "crimson"
     }
 });

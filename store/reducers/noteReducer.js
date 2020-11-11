@@ -26,6 +26,7 @@ const noteReducer = (state = initState, action) => {
                 addNoteError: action.addNoteError
             }
         case "GET_NOTES_SUCCESS":
+            console.log("notes", action.notes)
             return {
                 ...state,
                 notes: action.notes
@@ -34,6 +35,13 @@ const noteReducer = (state = initState, action) => {
             return {
                 ...state,
                 getNotesError: action.getNotesError
+            }
+        case "RESET_REDUCER" :
+            return {
+                ...state,
+                notes: null,
+                addNoteError: null,
+                getNotesError: null
             }
         default:
             return state;

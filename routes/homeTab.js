@@ -33,6 +33,7 @@ export default () => {
                     height: 50,
                 }
             }}
+            onNavigationS
         >
             <Tab.Screen name="HomeStack" component={HomeStack} options={{title: "Home"}}/>
             <Tab.Screen name="AddNote" component={AddNote} options={{title: "Add"}}/>
