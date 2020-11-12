@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#b2d8d8",
         textAlignVertical: "top",
         maxHeight: 300,
-        borderColor: "#505050",
+        borderColor: "teal",
         elevation: 3,
         shadowOffset: {
             width: 1,

@@ -20,7 +20,6 @@ class Home extends Component {
             <ImageBackground
                 source={require("../assets/images/zzz.png")}
                 style={{...globalStyles().container, alignItems: "center"}}
-                resizeMode="cover"
             >
                 <View style={styles.card}>
                     {getNotesError ?

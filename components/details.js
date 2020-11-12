@@ -47,6 +47,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "black",
         flexWrap: "wrap",
-
     }
 });

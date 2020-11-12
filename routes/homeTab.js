@@ -14,7 +14,7 @@ export default () => {
             screenOptions={({route}) => ({
                 tabBarIcon: ({focused, color, size}) => {
                     let iconName = route.name === "HomeStack" ? "home" :
-                        route.name === "AddNote" ? "add-circle-outline" : "settings";
+                        route.name === "AddNote" ? "add-circle-outline" : "account-box";
                     let iconColor = focused ? "white" : "teal";
                     return <MaterialIcons name={iconName} size={35} color={iconColor}/>
                 },

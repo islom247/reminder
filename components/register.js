@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         width: "70%",
         marginTop: 20,
         backgroundColor: "#b2d8d8",
-        borderColor: "#505050",
+        borderColor: "teal",
         elevation: 3,
         shadowOffset: {
             width: 1,
