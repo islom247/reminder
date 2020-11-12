@@ -1,5 +1,6 @@
 import React from "react";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {SafeAreaView} from "react-native-safe-area-context";
 import {MaterialIcons} from "@expo/vector-icons";
 import HomeStack from "../routes/homeStack";
 import Settings from "../components/settings";

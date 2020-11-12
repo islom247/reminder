@@ -8,7 +8,7 @@ export const addNote = (note) => {
             .collection("notes")
             .add({
                 ...note,
-                authorId: getState().auth.userId,
+                authorId: getState().auth.profile.uid,
                 createdAt: creationTime,
             })
             .then((response) => {
@@ -24,7 +24,7 @@ export const getNotes = () => {
     return (dispatch, getState) => {
         firestore
             .collection("notes")
-            .where("authorId", "==", getState().auth.userId)
+            .where("authorId", "==", getState().auth.profile.uid)
             .get()
             .then(snapshot => {
                 console.log(snapshot.docs.map(doc => {

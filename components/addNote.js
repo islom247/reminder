@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
+        marginTop: 24
     },
     addButton: {
         height: 50,

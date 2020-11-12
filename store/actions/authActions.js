@@ -7,8 +7,7 @@ export const signIn = (credentials) => {
             .auth()
             .signInWithEmailAndPassword(credentials.email, credentials.password)
             .then(response => {
-                console.log(response.user.uid);
-                dispatch({type: "LOGIN_SUCCESS", userId: response.user.uid});
+                dispatch({type: "LOGIN_SUCCESS", profile: response.user});
             })
             .catch(err => {
                 console.log("ERROR is: ", err.code);
@@ -19,6 +18,7 @@ export const signIn = (credentials) => {
                     case "auth/wrong-password":
                         error = "Wrong email or password."
                 }
+                error = error.length > 0 ? error : err.toString();
                 dispatch({type: "LOGIN_ERROR", loginError: error});
             })
     }
@@ -29,18 +29,17 @@ export const register = (newUser) => {
             .auth()
             .createUserWithEmailAndPassword(newUser.email, newUser.password)
             .then(response => {
-                console.log(response);
-                return firestore
-                    .collection("users")
-                    .doc(response.user.uid)
-                    .set({
-                        name: newUser.name,
-                        joined: new Date(),
-                        email: newUser.email
-                    });
-            })
-            .then(() => {
-                dispatch({type: "REGISTER_SUCCESS"});
+                console.log(response.user)
+                response
+                    .user
+                    .updateProfile({
+                        displayName: newUser.name
+                    })
+                    .then(response => {
+                        console.log("user is", firebaseApp.auth().currentUser);
+                        const user = firebaseApp.auth().currentUser;
+                        dispatch({type: "REGISTER_SUCCESS", profile: user});
+                    })
             })
             .catch(err => {
                 let error = "";
@@ -48,8 +47,8 @@ export const register = (newUser) => {
                     case "auth/email-already-in-use":
                         error = "The email address is already in use by another account."
                 }
+                error = err.length > 0 ? error : err.toString();
                 dispatch({type: "REGISTER_ERROR", registerError: error});
-                console.log("error is: ", err.code)
             })
     }
 }

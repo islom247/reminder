@@ -19,7 +19,7 @@ class Home extends Component {
         return (
             <ImageBackground
                 source={require("../assets/images/zzz.png")}
-                style={globalStyles().container}
+                style={{...globalStyles().container, alignItems: "center"}}
                 resizeMode="cover"
             >
                 <View style={styles.card}>
@@ -28,7 +28,7 @@ class Home extends Component {
                         :
                         !notes ? <ActivityIndicator
                                 size="large"
-                                color= "teal"
+                                color="teal"
                             /> :
                             notes.length === 0 ?
                                 <Text style={styles.text}>You haven't created any notes yet.</Text> :

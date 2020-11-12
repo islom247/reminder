@@ -6,7 +6,7 @@ const authReducer = (state = initState, action) => {
         case "LOGIN_SUCCESS":
             return {
                 ...state,
-                userId: action.userId,
+                profile: action.profile,
                 status: true,
                 loginError: null
             }
@@ -28,7 +28,8 @@ const authReducer = (state = initState, action) => {
             return {
                 ...state,
                 status: true,
-                registerError: null
+                registerError: null,
+                profile: action.profile
             }
         case "REGISTER_ERROR": {
             return {

@@ -8,7 +8,7 @@ export default (props = {}) => {
             paddingTop: 10,
             paddingBottom: 0,
             backgroundColor: '#fff',
-            alignItems: 'center',
+            //alignItems: 'center',
             justifyContent: 'center',
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
