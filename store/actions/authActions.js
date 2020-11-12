@@ -11,10 +11,13 @@ export const signIn = (credentials) => {
                 dispatch({type: "LOGIN_SUCCESS", userId: response.user.uid});
             })
             .catch(err => {
+                console.log("ERROR is: ", err.code);
                 let error = "";
                 switch (err.code) {
                     case "auth/user-not-found":
-                        error = "There is no user registered with the provided email."
+                        error = "Wrong email or password.";
+                    case "auth/wrong-password":
+                        error = "Wrong email or password."
                 }
                 dispatch({type: "LOGIN_ERROR", loginError: error});
             })
@@ -57,6 +60,7 @@ export const signOut = () => {
             .signOut()
             .then(() => {
                 dispatch({type: "LOGOUT"});
+                dispatch({type: "RESET_REDUCER"});
             });
     }
 }

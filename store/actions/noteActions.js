@@ -32,7 +32,8 @@ export const getNotes = () => {
                     return {...userNotes, id: doc.id}
                 }));
                 dispatch({
-                    type: "GET_NOTES_SUCCESS", notes: snapshot.docs.map(doc => {
+                    type: "GET_NOTES_SUCCESS",
+                    notes: snapshot.docs.map(doc => {
                         const userNotes = doc.data();
                         return {...userNotes, noteId: doc.id}
                     }).sort((a, b) => (a.createdAt > b.createdAt) ? -1 : 1)

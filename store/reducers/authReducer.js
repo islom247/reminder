@@ -19,6 +19,7 @@ const authReducer = (state = initState, action) => {
             return {
                 ...state,
                 status: false,
+                userId: null,
                 loginError: null,
                 registerError: null
             }

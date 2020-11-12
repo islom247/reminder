@@ -10,7 +10,11 @@ export default ({route}) => {
                 <ScrollView showsVerticalScrollIndicator={true}>
                     <Text style={styles.headText}>Date of creation</Text>
                     <Text style={styles.text}>
-                        {moment(route.params.item.createdAt.toDate()).format('MMMM Do YYYY, h:mm:ss a')}
+                        {!(route.params.item.createdAt instanceof Date) ?
+                            moment(route.params.item.createdAt.toDate()).format('MMMM Do YYYY, h:mm:ss a')
+                            :
+                            moment(route.params.item.createdAt).format('MMMM Do YYYY, h:mm:ss a')
+                        }
                     </Text>
                     <Text style={styles.headText}>Title</Text>
                     <Text style={styles.text}>{route.params.item.title}</Text>
