@@ -48,6 +48,7 @@ const AddNote = ({addNote, addNoteError}) => {
                         initialValues={{title: "", content: ""}}
                         validationSchema={reviewSchema}
                         onSubmit={(values, actions) => {
+                            Keyboard.dismiss();
                             actions.resetForm();
                             console.log(values);
                             addNote(values);

@@ -39,42 +39,42 @@ class Home extends Component {
                                             this.props.navigation.navigate("Details", {item});
                                         }}>
                                             <Card>
-                                                <Text style={{fontWeight: "bold"}}>{item.title}</Text>
-                                                <Text numberOfLines={2}>{item.content}</Text>
+                                            <Text style={{fontWeight: "bold"}}>{item.title}</Text>
+                                            <Text numberOfLines={2}>{item.content}</Text>
                                             </Card>
-                                        </TouchableOpacity>
-                                    )}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    showsVerticalScrollIndicator={false}
-                                />}
-                </View>
-            </ImageBackground>
-        );
-    }
-}
+                                            </TouchableOpacity>
+                                            )}
+                                            keyExtractor={(item, index) => index.toString()}
+                                            showsVerticalScrollIndicator={false}
+                                            />}
+                                            </View>
+                                            </ImageBackground>
+                                            );
+                                            }
+                                            }
 
-const mapStateToProps = (state) => {
-    return {
-        notes: state.note.notes,
-        getNotesError: state.note.getNotesError
-    }
-}
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getNotes: () => dispatch(getNotes())
-    }
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
-const styles = StyleSheet.create({
-    card: {
-        margin: 10,
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "flex-start",
-    },
-    text: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: "crimson"
-    }
-});
+                                            const mapStateToProps = (state) => {
+                                            return {
+                                            notes: state.note.notes,
+                                            getNotesError: state.note.getNotesError
+                                            }
+                                            }
+                                            const mapDispatchToProps = (dispatch) => {
+                                            return {
+                                            getNotes: () => dispatch(getNotes())
+                                            }
+                                            }
+                                            export default connect(mapStateToProps, mapDispatchToProps)(Home);
+                                            const styles = StyleSheet.create({
+                                            card: {
+                                            margin: 10,
+                                            flex: 1,
+                                            flexDirection: "row",
+                                            justifyContent: "flex-start",
+                                            },
+                                            text: {
+                                            fontSize: 18,
+                                            fontWeight: "bold",
+                                            color: "crimson"
+                                            }
+                                            });

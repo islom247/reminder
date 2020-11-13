@@ -7,7 +7,14 @@ export const signIn = (credentials) => {
             .auth()
             .signInWithEmailAndPassword(credentials.email, credentials.password)
             .then(response => {
-                dispatch({type: "LOGIN_SUCCESS", profile: response.user});
+                if (response.user.emailVerified) {
+                    dispatch({type: "LOGIN_SUCCESS", profile: response.user});
+                } else {
+                    dispatch({
+                        type: "LOGIN_ERROR",
+                        loginError: "Your email address is not verified.\nCheck your inbox for an email with verification link."
+                    });
+                }
             })
             .catch(err => {
                 console.log("ERROR is: ", err.code);
@@ -37,6 +44,11 @@ export const register = (newUser) => {
                     })
                     .then(response => {
                         console.log("user is", firebaseApp.auth().currentUser);
+                        const user = firebaseApp.auth().currentUser;
+                        return user.sendEmailVerification();
+                        //dispatch({type: "REGISTER_SUCCESS", profile: user});
+                    })
+                    .then(response => {
                         const user = firebaseApp.auth().currentUser;
                         dispatch({type: "REGISTER_SUCCESS", profile: user});
                     })

@@ -55,6 +55,10 @@ const Register = ({navigation, register, registerError}) => {
                             //actions.resetForm();
                             console.log(values);
                             register({name: values.name, email: values.email, password: values.password});
+                            if (!registerError) {
+                                alert("Verify your email now.");
+                            }
+                            navigation.navigate("Login");
                         }}
                     >
                         {(formikProps) => (
