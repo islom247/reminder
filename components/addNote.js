@@ -9,7 +9,8 @@ import {
     Keyboard,
     ImageBackground,
     Dimensions,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    ToastAndroid
 } from "react-native";
 import {Formik} from "formik";
 import * as yup from "yup";
@@ -52,6 +53,13 @@ const AddNote = ({addNote, addNoteError}) => {
                             actions.resetForm();
                             console.log(values);
                             addNote(values);
+                            if (!addNoteError) {
+                                ToastAndroid.showWithGravity(
+                                    "Note added successfully!",
+                                    ToastAndroid.SHORT,
+                                    ToastAndroid.BOTTOM
+                                );
+                            }
                         }}
                     >
                         {(formikProps) => (
