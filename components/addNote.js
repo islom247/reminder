@@ -1,20 +1,25 @@
-import React from "react";
+import React, {useState} from "react";
 import {connect} from "react-redux";
-import {addNote} from "../store/actions/noteActions";
 import {
     StyleSheet,
     Text,
     TextInput,
     TouchableWithoutFeedback,
     Keyboard,
+    Image,
+    View,
     ImageBackground,
     Dimensions,
     KeyboardAvoidingView,
-    ToastAndroid
+    ToastAndroid,
+    ScrollView
 } from "react-native";
+import {MaterialIcons} from '@expo/vector-icons';
 import {Formik} from "formik";
 import * as yup from "yup";
 import TextButton from "../shared/button";
+import {addNote} from "../store/actions/noteActions";
+import * as ImagePicker from "expo-image-picker";
 
 const reviewSchema = yup.object({
     title: yup.string()
@@ -36,70 +41,96 @@ const renderError = (formikProps, inputFieldName) => {
     }
 }
 const AddNote = ({addNote, addNoteError}) => {
+    const [image, setImage] = useState(null);
+    const pickImage = async () => {
+        let result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1
+        })
+        console.log(result);
+        if (!result.cancelled) {
+            setImage(result.uri);
+        }
+    }
     return (
+
         <ImageBackground
             source={require("../assets/images/zzz.png")}
             style={styles.background}
             resizeMode="cover"
         >
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <KeyboardAvoidingView style={styles.container} behavior="padding">
-                    <Text style={styles.text}>NEW NOTE</Text>
-                    <Formik
-                        initialValues={{title: "", content: ""}}
-                        validationSchema={reviewSchema}
-                        onSubmit={(values, actions) => {
-                            Keyboard.dismiss();
-                            actions.resetForm();
-                            console.log(values);
-                            addNote(values);
-                            if (!addNoteError) {
-                                ToastAndroid.showWithGravity(
-                                    "Note added successfully!",
-                                    ToastAndroid.SHORT,
-                                    ToastAndroid.BOTTOM
-                                );
-                            }
-                        }}
-                    >
-                        {(formikProps) => (
-                            <>
-                                {/*{renderText("Title")}*/}
-                                <TextInput
-                                    placeholder="Title"
-                                    style={styles.input}
-                                    onChangeText={formikProps.handleChange("title")}
-                                    value={formikProps.values.title}
-                                    onBlur={formikProps.handleBlur("title")}
-                                />
-                                {renderError(formikProps, "title")}
-                                <TextInput
-                                    placeholder="Content"
-                                    style={styles.input}
-                                    multiline
-                                    numberOfLines={4}
-                                    onChangeText={formikProps.handleChange("content")}
-                                    value={formikProps.values.content}
-                                    onBlur={formikProps.handleBlur("content")}
-                                />
-                                {renderError(formikProps, "content")}
-                                <TextButton
-                                    text="add"
-                                    color="teal"
-                                    textColor="white"
-                                    onPress={formikProps.handleSubmit}
-                                />
-                                {
-                                    addNoteError &&
-                                    <Text style={styles.errorText}>
-                                        {addNoteError}
-                                    </Text>
+            <ScrollView style={{flex: 1}}>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <KeyboardAvoidingView style={styles.container} behavior="padding">
+                        <Text style={styles.text}>NEW NOTE</Text>
+                        <Formik
+                            initialValues={{title: "", content: ""}}
+                            validationSchema={reviewSchema}
+                            onSubmit={(values, actions) => {
+                                Keyboard.dismiss();
+                                actions.resetForm();
+                                console.log(values);
+                                addNote(values);
+                                if (!addNoteError) {
+                                    ToastAndroid.showWithGravity(
+                                        "Note added successfully!",
+                                        ToastAndroid.SHORT,
+                                        ToastAndroid.BOTTOM
+                                    );
                                 }
-                            </>
-                        )}
-                    </Formik>
-                </KeyboardAvoidingView>
-            </TouchableWithoutFeedback>
+                            }}
+                        >
+                            {(formikProps) => (
+                                <>
+                                    {/*{renderText("Title")}*/}
+                                    <TextInput
+                                        placeholder="Title"
+                                        style={styles.input}
+                                        onChangeText={formikProps.handleChange("title")}
+                                        value={formikProps.values.title}
+                                        onBlur={formikProps.handleBlur("title")}
+                                    />
+                                    {renderError(formikProps, "title")}
+                                    <TextInput
+                                        placeholder="Content"
+                                        style={styles.input}
+                                        multiline
+                                        numberOfLines={4}
+                                        onChangeText={formikProps.handleChange("content")}
+                                        value={formikProps.values.content}
+                                        onBlur={formikProps.handleBlur("content")}
+                                    />
+                                    {renderError(formikProps, "content")}
+                                    <Text>add a photo</Text>
+                                    <MaterialIcons
+                                        name="add-a-photo"
+                                        size={50}
+                                        color="teal"
+                                        style={styles.addPhotoButton}
+                                        onPress={pickImage}
+                                    />
+                                    {image && <Image source={{uri: image}} style={{width: 160, height: 120}}/>}
+                                    <TextButton
+                                        text="add"
+                                        color="teal"
+                                        textColor="white"
+                                        onPress={formikProps.handleSubmit}
+                                        style={styles.addPhotoButton}
+                                    />
+                                    {
+                                        addNoteError &&
+                                        <Text style={styles.errorText}>
+                                            {addNoteError}
+                                        </Text>
+                                    }
+                                </>
+                            )}
+                        </Formik>
+                    </KeyboardAvoidingView>
+                </TouchableWithoutFeedback>
+            </ScrollView>
         </ImageBackground>
     );
 }
@@ -136,11 +167,20 @@ const styles = StyleSheet.create({
         backgroundColor: "coral",
         borderRadius: 100
     },
+    addPhotoButton: {
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: "teal",
+        padding: 5,
+        borderRadius: 10,
+        alignSelf: "center",
+        //marginTop: 0
+    },
     text: {
         fontSize: 30,
-        marginTop: 30,
+        marginTop: 10,
         color: "black",
-        fontWeight: "bold"
+        fontWeight: "bold",
     },
     input: {
         borderWidth: 1,
@@ -151,7 +191,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         backgroundColor: "#b2d8d8",
         textAlignVertical: "top",
-        maxHeight: 300,
+        maxHeight: 120,
         borderColor: "teal",
         elevation: 3,
         shadowOffset: {
