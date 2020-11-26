@@ -43,7 +43,7 @@ const renderError = (formikProps, inputFieldName) => {
 const AddNote = ({addNote, addNoteError}) => {
     const [image, setImage] = useState(null);
     const pickImage = async () => {
-        let result = await ImagePicker.launchCameraAsync({
+        let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
@@ -61,7 +61,10 @@ const AddNote = ({addNote, addNoteError}) => {
             style={styles.background}
             resizeMode="cover"
         >
-            <ScrollView style={{flex: 1}}>
+            <ScrollView
+                style={{flex: 1}}
+                showsVerticalScrollIndicator={false}
+            >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <KeyboardAvoidingView style={styles.container} behavior="padding">
                         <Text style={styles.text}>NEW NOTE</Text>
@@ -72,7 +75,7 @@ const AddNote = ({addNote, addNoteError}) => {
                                 Keyboard.dismiss();
                                 actions.resetForm();
                                 console.log(values);
-                                addNote(values);
+                                addNote({...values, image: image});
                                 if (!addNoteError) {
                                     ToastAndroid.showWithGravity(
                                         "Note added successfully!",

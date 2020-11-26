@@ -1,9 +1,11 @@
 import firebaseApp from "../../config/firebaseConfig";
 
 const firestore = firebaseApp.firestore();
+const storage = firebaseApp.storage();
 export const addNote = (note) => {
     return (dispatch, getState) => {
         let creationTime = new Date();
+        console.log("Image is : ", note.image);
         firestore
             .collection("notes")
             .add({
@@ -11,9 +13,17 @@ export const addNote = (note) => {
                 authorId: getState().auth.profile.uid,
                 createdAt: creationTime,
             })
-            .then((response) => {
+            .then(async (response) => {
                 console.log("addition log", response.get());
-                dispatch({type: "ADD_NOTE_SUCCESS", note: {...note, createdAt: creationTime}});
+                const resp = await fetch(note.image);
+                const blob = await resp.blob();
+                storage
+                    .ref()
+                    .child("image")
+                    .put(blob)
+                    .then(() => {
+                        dispatch({type: "ADD_NOTE_SUCCESS", note: {...note, createdAt: creationTime}});
+                    })
             })
             .catch(err => {
                 dispatch({type: "ADD_NOTE_ERROR", addNoteError: err});
